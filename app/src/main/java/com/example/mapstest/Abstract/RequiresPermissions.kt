@@ -32,9 +32,18 @@ fun RequestLocationPermission(mapManager: MapManager)
 
     fun checkPermissions()
     {
+        val old = permissionsGranted
+
+        // check if all permissions are granted
         permissionsGranted = locationPermissions.all()
         {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+        }
+
+        // if permissions have changed, center map on user
+        if (permissionsGranted != old)
+        {
+            mapManager.centerMapOnUser(context)
         }
     }
 
@@ -45,8 +54,6 @@ fun RequestLocationPermission(mapManager: MapManager)
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
     { result ->
         permissionsGranted = result.values.all { it }
-
-        mapManager.centerMapOnUser(context)
     }
 
     // request permissions if not granted
