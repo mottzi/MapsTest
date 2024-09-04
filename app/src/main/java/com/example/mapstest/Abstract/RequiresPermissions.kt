@@ -54,6 +54,8 @@ fun RequestLocationPermission(mapManager: MapManager)
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
     { result ->
         permissionsGranted = result.values.all { it }
+
+        mapManager.centerMapOnUser(context)
     }
 
     // request permissions if not granted

@@ -16,7 +16,7 @@ fun ActivityPickerScreen()
     val mapManager: MapManager = viewModel()
     val categoryManager: CategoryManager = viewModel()
 
-    // requests location permissions if not already granted
+    // requests location permissions
     RequestLocationPermission(mapManager)
 
     Box(modifier = Modifier.fillMaxSize())
