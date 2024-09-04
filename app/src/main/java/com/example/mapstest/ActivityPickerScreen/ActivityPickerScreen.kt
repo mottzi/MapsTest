@@ -36,8 +36,8 @@ fun ActivityPickerScreen()
             Text(
                 text = "Permissions: ${if (permissionsGranted) "granted" else "denied"}",
                 modifier = Modifier
-                    .align(Alignment.BottomCenter) // Aligns the text to the bottom center
-                    .padding(bottom = 32.dp) // Optional: Adds padding at the bottom
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 32.dp)
             )
         }
     }
