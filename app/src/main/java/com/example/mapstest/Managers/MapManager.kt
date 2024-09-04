@@ -8,14 +8,17 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 
-class MapManager: ViewModel() {
+class MapManager: ViewModel()
+{
     var cameraPosition by mutableStateOf(CameraPositionState())
 
-    fun updateCameraPosition(location: LatLng) {
+    fun updateCameraPosition(location: LatLng)
+    {
         val cameraPosition = CameraPosition.Builder()
             .target(location)
-            .zoom(15f)
+            .zoom(13f)
             .build()
+
         this.cameraPosition = CameraPositionState(cameraPosition)
     }
 }

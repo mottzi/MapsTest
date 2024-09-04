@@ -18,8 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 @Composable
-fun RequiresPermission(permissions: Array<String>,
-                       content: @Composable (permissionsGranted: Boolean) -> Unit)
+fun RequiresPermission(permissions: Array<String>)
 {
     // needed for checking and requesting permissions
     val context = LocalContext.current
@@ -56,6 +55,11 @@ fun RequiresPermission(permissions: Array<String>,
             if (event == Lifecycle.Event.ON_RESUME)
             {
                 checkPermissions()
+
+                if (!permissionsGranted)
+                {
+                    ActivityCompat.requestPermissions(context as Activity, permissions, 0)
+                }
             }
         }
 
@@ -68,5 +72,5 @@ fun RequiresPermission(permissions: Array<String>,
     }
 
     // show content passing down permission state
-    content(permissionsGranted)
+    //content(permissionsGranted)
 }
