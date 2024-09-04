@@ -33,6 +33,7 @@ fun ActivityPickerScreen()
             CategoryMap(mapManager = mapManager)
             CategoryPicker(categoryManager = categoryManager)
 
+            // only for debugging
             Text(
                 text = "Permissions: ${if (permissionsGranted) "granted" else "denied"}",
                 modifier = Modifier
