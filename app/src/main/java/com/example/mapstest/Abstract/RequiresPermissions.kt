@@ -1,5 +1,6 @@
 package com.example.mapstest.Abstract
 
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -30,37 +31,27 @@ fun RequestLocationPermission(mapManager: MapManager)
 
     var permissionsGranted by remember { mutableStateOf(false) }
 
-    fun checkPermissions()
+    if (!permissionsGranted)
     {
-        val old = permissionsGranted
-
-        // check if all permissions are granted
-        permissionsGranted = locationPermissions.all()
-        {
-            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-
-        // if permissions have changed, center map on user
-        if (permissionsGranted != old)
-        {
-            mapManager.centerMapOnUser(context)
-        }
+        permissionsGranted = checkPermissionsCenterMap(permissionsGranted, mapManager, context)
     }
-
-    // check permissions on start
-    checkPermissions()
 
     // permission result callback
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
     { result ->
         permissionsGranted = result.values.all { it }
 
-        mapManager.centerMapOnUser(context)
+        if (permissionsGranted)
+        {
+            mapManager.centerMapOnUser(context)
+        }
     }
 
     // request permissions if not granted
-    LaunchedEffect(permissionsGranted) {
-        if (!permissionsGranted) {
+    LaunchedEffect(permissionsGranted)
+    {
+        if (!permissionsGranted)
+        {
             permissionLauncher.launch(locationPermissions)
         }
     }
@@ -72,7 +63,8 @@ fun RequestLocationPermission(mapManager: MapManager)
         { _, event ->
             if (event == Lifecycle.Event.ON_RESUME)
             {
-                checkPermissions()
+                permissionsGranted =
+                    checkPermissionsCenterMap(permissionsGranted, mapManager, context)
             }
         }
 
@@ -83,4 +75,21 @@ fun RequestLocationPermission(mapManager: MapManager)
             activity.lifecycle.removeObserver(observer)
         }
     }
+}
+
+
+fun checkPermissionsCenterMap(oldPermission: Boolean, mapManager: MapManager, context: Context): Boolean
+{
+    val allPermissionsGranted = locationPermissions.all()
+    {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // if permissions have changed from NO to YES, center map on user
+    if (allPermissionsGranted != oldPermission && allPermissionsGranted)
+    {
+        mapManager.centerMapOnUser(context)
+    }
+
+    return allPermissionsGranted
 }
