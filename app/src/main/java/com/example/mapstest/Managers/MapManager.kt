@@ -7,11 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.mapstest.Abstract.MapCategory
-import com.example.mapstest.Abstract.OSMQuery
+import com.example.mapstest.Abstract.OSMRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 data class OSMPointOfInterest(
@@ -56,8 +60,18 @@ class MapManager: ViewModel()
         if (category.osmCategories == null) return
         val region = cameraPosition.projection?.visibleRegion?.latLngBounds ?: return
 
-        val query = OSMQuery.buildQuery(category.osmCategories, region)
+        val request = OSMRequest(category, region)
 
-        println(query)
+        // Launch coroutine on the IO dispatcher for the network request
+        CoroutineScope(Dispatchers.IO).launch()
+        {
+            val foundItems = request.start() ?: return@launch
+
+            // Update the UI on the main thread
+            withContext(Dispatchers.Main)
+            {
+                osmSearchResults += foundItems
+            }
+        }
     }
 }
