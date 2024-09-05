@@ -6,7 +6,6 @@ data class MapCategory(
     val id: UUID = UUID.randomUUID(),
 
     val title: String,
-    val value: String? = null,
     val osmCategories: List<OSMPointOfInterestCategory>? = null,
 
     var isSelected: Boolean = false

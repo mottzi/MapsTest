@@ -19,7 +19,7 @@ class MapManager: ViewModel()
     {
         val cameraPosition = CameraPosition.Builder()
             .target(location)
-            .zoom(13f)
+            .zoom(15f)
             .build()
 
         this.cameraPosition = CameraPositionState(cameraPosition)
