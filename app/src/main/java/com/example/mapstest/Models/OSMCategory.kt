@@ -2,25 +2,27 @@ package com.example.mapstest.Models
 
 import java.util.UUID
 
+// represents a selectable OSM category that is made up of one or multiple OSMTagFilter
 data class OSMCategory(
     val id: UUID = UUID.randomUUID(),
+
+    // used by CategoryPicker
     val title: String,
     var isSelected: Boolean = false,
+
+    // used by OSMQuery and OSMRequest
     val tagFilters: List<OSMTagFilter>
 )
 
+// list of OSMCategory that is used by CategoryPicker
 val initialCategories: List<OSMCategory> = listOf(
     OSMCategory(
         title = "Movies",
-        tagFilters = listOf(
-            OSMTagFilter("amenity", "cinema")
-        )
+        tagFilters = listOf(OSMTagFilter("amenity", "cinema"))
     ),
     OSMCategory(
         title = "Park",
-        tagFilters = listOf(
-            OSMTagFilter("leisure", "park")
-        )
+        tagFilters = listOf(OSMTagFilter("leisure", "park"))
     ),
     OSMCategory(
         title = "Eat",

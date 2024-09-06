@@ -18,11 +18,11 @@ class OSMRequest(private val category: OSMCategory, private val region: LatLngBo
     suspend fun start(): List<OSMPointOfInterest>?
     {
         // Ensure categories are available
-        val categories = category.tagFilters
-        if (categories.isEmpty()) return null
+        val filters = category.tagFilters
+        if (filters.isEmpty()) return null
 
         // Prepare query string using OSMQuery
-        val rawQuery = OSMQuery.buildQuery(categories, region) ?: return null
+        val rawQuery = OSMQuery.buildQuery(filters, region) ?: return null
         val query = encodeQuery(rawQuery)
         val urlQuery = "https://overpass-api.de/api/interpreter?data=$query"
 
