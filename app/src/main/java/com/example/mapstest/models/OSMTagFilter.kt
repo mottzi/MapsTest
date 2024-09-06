@@ -1,4 +1,4 @@
-package com.example.mapstest.Models
+package com.example.mapstest.models
 
 // OSMTagFilter("amenity", "cinema")    -> OSMQuery: ["amenity"="cinema"]
 // OSMTagFilter("sport")                -> OSMQuery: ["sport"]

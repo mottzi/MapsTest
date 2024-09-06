@@ -1,6 +1,6 @@
-package com.example.mapstest.Abstract
+package com.example.mapstest.utils
 
-import com.example.mapstest.Models.OSMTagFilter
+import com.example.mapstest.models.OSMTagFilter
 import com.google.android.gms.maps.model.LatLngBounds
 
 // this class is used by OSMRequest to build valid OSM OverPass API queries

@@ -1,4 +1,4 @@
-package com.example.mapstest.Managers
+package com.example.mapstest.managers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.mapstest.Abstract.OSMRequest
-import com.example.mapstest.Models.OSMCategory
-import com.example.mapstest.Models.OSMPointOfInterest
+import com.example.mapstest.models.OSMCategory
+import com.example.mapstest.models.OSMPointOfInterest
+import com.example.mapstest.utils.OSMRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng

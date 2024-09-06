@@ -1,4 +1,4 @@
-package com.example.mapstest.Abstract
+package com.example.mapstest.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -16,21 +16,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.example.mapstest.Managers.MapManager
+import com.example.mapstest.managers.MapManager
 
+// permissions that are needed to get user location
 private val locationPermissions = arrayOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,
     android.Manifest.permission.ACCESS_COARSE_LOCATION,
 )
 
+// requests permissions if not already granted
+// centers map on user location when user grants permissions
 @Composable
-fun RequestLocationPermission(mapManager: MapManager)
+fun RequestPermissions(mapManager: MapManager)
 {
     val context = LocalContext.current
     val activity = context as ComponentActivity
 
+    // state to track if permissions have been granted
     var permissionsGranted by remember { mutableStateOf(false) }
 
+    // ! not sure if this is needed !
     if (!permissionsGranted)
     {
         permissionsGranted = checkPermissionsCenterMap(permissionsGranted, mapManager, context)
@@ -41,13 +46,14 @@ fun RequestLocationPermission(mapManager: MapManager)
     { result ->
         permissionsGranted = result.values.all { it }
 
+        // center map on user when permissions are granted
         if (permissionsGranted)
         {
             mapManager.centerMapOnUser(context)
         }
     }
 
-    // request permissions if not granted
+    // request permissions onAppear
     LaunchedEffect(permissionsGranted)
     {
         if (!permissionsGranted)
@@ -56,7 +62,7 @@ fun RequestLocationPermission(mapManager: MapManager)
         }
     }
 
-    // Re-check permissions when user resumes the app
+    // re-check permissions when user resumes the app
     DisposableEffect(Unit)
     {
         val observer = LifecycleEventObserver()
@@ -77,16 +83,16 @@ fun RequestLocationPermission(mapManager: MapManager)
     }
 }
 
-
 fun checkPermissionsCenterMap(oldPermission: Boolean, mapManager: MapManager, context: Context): Boolean
 {
+    // check if permissions have been granted
     val allPermissionsGranted = locationPermissions.all()
     {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
     // if permissions have changed from NO to YES, center map on user
-    if (allPermissionsGranted != oldPermission && allPermissionsGranted)
+    if (allPermissionsGranted && !oldPermission)
     {
         mapManager.centerMapOnUser(context)
     }

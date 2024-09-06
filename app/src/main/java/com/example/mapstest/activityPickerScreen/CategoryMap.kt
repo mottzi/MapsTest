@@ -1,13 +1,15 @@
-package com.example.mapstest.ActivityPickerScreen
+package com.example.mapstest.activityPickerScreen
 
 import androidx.compose.runtime.Composable
-import com.example.mapstest.Managers.MapManager
+import com.example.mapstest.managers.MapManager
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 
+// displays a map using Google Maps SDK
+// displays all POI selected using CategoryPicker as a Marker
 @Composable
 fun CategoryMap(mapManager: MapManager)
 {

@@ -1,4 +1,4 @@
-package com.example.mapstest.Managers
+package com.example.mapstest.managers
 
 import androidx.lifecycle.ViewModel
 

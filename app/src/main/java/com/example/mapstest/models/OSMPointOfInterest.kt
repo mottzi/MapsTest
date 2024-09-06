@@ -1,4 +1,4 @@
-package com.example.mapstest.Models
+package com.example.mapstest.models
 
 import com.google.android.gms.maps.model.LatLng
 import java.util.UUID

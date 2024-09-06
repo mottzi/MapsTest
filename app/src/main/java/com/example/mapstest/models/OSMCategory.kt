@@ -1,4 +1,4 @@
-package com.example.mapstest.Models
+package com.example.mapstest.models
 
 import java.util.UUID
 
