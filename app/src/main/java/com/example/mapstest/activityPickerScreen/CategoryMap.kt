@@ -17,7 +17,11 @@ fun CategoryMap(mapManager: MapManager)
     val cameraPosition = mapManager.cameraPosition
 
     // custom map styling
-    val properties = MapProperties(mapStyleOptions = MapStyleOptions(mapStyles))
+    val properties = MapProperties(
+        isBuildingEnabled = true,
+        isMyLocationEnabled = true,
+        mapStyleOptions = MapStyleOptions(mapStyles)
+    )
 
     GoogleMap(cameraPositionState = cameraPosition, properties = properties)
     {
