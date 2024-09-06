@@ -11,6 +11,7 @@ import com.example.mapstest.Abstract.OSMRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.CameraPositionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,25 +54,44 @@ class MapManager: ViewModel()
         }
     }
 
-    fun addMapMarkersOSM(category: MapCategory)
+    fun toggleMapMarkers(category: MapCategory)
+    {
+        val region = cameraPosition.projection?.visibleRegion?.latLngBounds ?: return
+
+        if (category.isSelected)
+        {
+            addMapMarkersOSM(category, region)
+        }
+        else
+        {
+            removeMapMarkers(category)
+        }
+    }
+
+    private fun addMapMarkersOSM(category: MapCategory, region: LatLngBounds)
     {
         println("${category.title} was tapped")
 
         if (category.osmCategories == null) return
-        val region = cameraPosition.projection?.visibleRegion?.latLngBounds ?: return
 
         val request = OSMRequest(category, region)
 
-        // Launch coroutine on the IO dispatcher for the network request
+        // launch coroutine
         CoroutineScope(Dispatchers.IO).launch()
         {
             val foundItems = request.start() ?: return@launch
 
-            // Update the UI on the main thread
+            // update UI on the main thread
             withContext(Dispatchers.Main)
             {
                 osmSearchResults += foundItems
             }
         }
+    }
+
+    private fun removeMapMarkers(category: MapCategory)
+    {
+        // Update the state with the filtered list
+        osmSearchResults = osmSearchResults.filter { it.category.id != category.id }
     }
 }

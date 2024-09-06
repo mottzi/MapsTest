@@ -10,13 +10,10 @@ import okhttp3.Request
 import org.json.JSONObject
 import java.net.URLEncoder
 
-// OSMRequest class to handle the API request
 class OSMRequest(private val category: MapCategory, private val region: LatLngBounds)
 {
-    // OkHttp client instance
     private val client = OkHttpClient()
 
-    // Function to start the request asynchronously
     suspend fun start(): List<OSMPointOfInterest>?
     {
         // Ensure categories are available

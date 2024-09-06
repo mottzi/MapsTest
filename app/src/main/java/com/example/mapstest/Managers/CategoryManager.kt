@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.mapstest.Abstract.MapCategory
 import com.example.mapstest.Abstract.initialCategories
 
+@Suppress("NAME_SHADOWING")
 class CategoryManager : ViewModel()
 {
     var mapManager: MapManager? = null
@@ -15,16 +16,18 @@ class CategoryManager : ViewModel()
 
     fun toggleCategory(category: MapCategory)
     {
-        // toggle isSelected of category
-        allCategories = allCategories.map()
+        val index = allCategories.indexOfFirst { it.id == category.id }
+        if (index == -1) return
+
+        val category = allCategories[index].copy(isSelected = !allCategories[index].isSelected)
+
+        allCategories = allCategories.toMutableList().apply()
         {
-            if (it.id == category.id) it.copy(isSelected = !it.isSelected)
-            else it
+            set(index, category)
         }
 
-        // sort the categories by isSelected
         allCategories = allCategories.sortedByDescending { it.isSelected }
 
-        mapManager?.addMapMarkersOSM(category)
+        mapManager?.toggleMapMarkers(category)
     }
 }
