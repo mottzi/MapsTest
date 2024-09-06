@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.mapstest.models.OSMCategory
 import com.example.mapstest.models.initialCategories
 
-//
+// manages the state of CategoryPicker
+// interacts with MapManager when user toggles a category button
 class CategoryManager : ViewModel()
 {
     // reference to MapManager so we can call mapManager.toggleMapMarkers() when a category button is toggled
@@ -16,7 +17,7 @@ class CategoryManager : ViewModel()
     // list of categories as state variable, this is that CategoryPicker renders
     var allCategories: List<OSMCategory> by mutableStateOf(initialCategories)
 
-    // toggles a category isSelected property and fetches or removes POI from OSM
+    // toggles the isSelected property and fetches or removes POI from OSM
     fun toggleCategory(category: OSMCategory)
     {
         // abort if the category button wasn't found
