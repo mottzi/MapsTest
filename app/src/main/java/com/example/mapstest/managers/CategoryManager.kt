@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.mapstest.models.OSMCategory
-import com.example.mapstest.models.initialCategories
 
 // manages the state of CategoryPicker
 // interacts with MapManager when user toggles a category button
@@ -15,26 +14,20 @@ class CategoryManager : ViewModel()
     var mapManager: MapManager? = null
 
     // list of categories as state variable, this is that CategoryPicker renders
-    var allCategories: List<OSMCategory> by mutableStateOf(initialCategories)
+    var allCategories: List<OSMCategory> by mutableStateOf(com.example.mapstest.models.allCategories)
 
     // toggles the isSelected property and fetches or removes POI from OSM
     fun toggleCategory(category: OSMCategory)
     {
-        // abort if the category button wasn't found
-        val index = allCategories.indexOfFirst { it.id == category.id }
-        if (index == -1) return
+        // update allCategories state variable
+        allCategories = allCategories
+            // toggle isSelected of tapped category in state variable
+            .map { if (it.id == category.id) it.copy(isSelected = !it.isSelected) else it }
+            // sort by isSelected property
+            .sortedByDescending { it.isSelected }
 
-        // toggle local category copy
+        // toggle isSelected of local scope category
         category.isSelected = !category.isSelected
-
-        // update state variable with toggled category button
-        allCategories = allCategories.toMutableList().apply()
-        {
-            set(index, category)
-        }
-
-        // sort category buttons by isSelected property
-        allCategories = allCategories.sortedByDescending { it.isSelected }
 
         // fetch or remove POI from OSM
         mapManager?.toggleMapMarkers(category)

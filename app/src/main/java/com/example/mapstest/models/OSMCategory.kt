@@ -15,7 +15,7 @@ data class OSMCategory(
 )
 
 // list of OSMCategory that is used by CategoryPicker
-val initialCategories: List<OSMCategory> = listOf(
+val allCategories: List<OSMCategory> = listOf(
     OSMCategory(
         title = "Movies",
         tagFilters = listOf(OSMTagFilter("amenity", "cinema"))
