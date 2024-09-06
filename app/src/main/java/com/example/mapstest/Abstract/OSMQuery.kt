@@ -1,12 +1,13 @@
 package com.example.mapstest.Abstract
 
+import com.example.mapstest.Models.OSMTagFilter
 import com.google.android.gms.maps.model.LatLngBounds
 
 class OSMQuery
 {
     companion object
     {
-        fun buildQuery(categoryFilters: List<OSMPointOfInterestCategory>, region: LatLngBounds): String?
+        fun buildQuery(categoryFilters: List<OSMTagFilter>, region: LatLngBounds): String?
         {
             // Abort if empty category
             if (categoryFilters.isEmpty()) return null
@@ -20,12 +21,12 @@ class OSMQuery
                 // If the category has a value (e.g., "amenity" = "cinema")
                 if (category.value != null)
                 {
-                    query += "nwr[\"name\"][\"${category.name}\"=\"${category.value}\"];"
+                    query += "nwr[\"name\"][\"${category.tag}\"=\"${category.value}\"];"
                 }
                 // If the category is a standalone tag (e.g., "sport")
                 else
                 {
-                    query += "nwr[\"name\"][\"${category.name}\"];"
+                    query += "nwr[\"name\"][\"${category.tag}\"];"
                 }
             }
 

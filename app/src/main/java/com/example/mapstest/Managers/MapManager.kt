@@ -6,8 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.mapstest.Abstract.MapCategory
 import com.example.mapstest.Abstract.OSMRequest
+import com.example.mapstest.Models.OSMCategory
+import com.example.mapstest.Models.OSMPointOfInterest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -17,14 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.UUID
-
-data class OSMPointOfInterest(
-    val id: UUID = UUID.randomUUID(),
-    val name: String,
-    val coordinate: LatLng,
-    val category: MapCategory
-)
 
 class MapManager: ViewModel()
 {
@@ -54,7 +47,7 @@ class MapManager: ViewModel()
         }
     }
 
-    fun toggleMapMarkers(category: MapCategory)
+    fun toggleMapMarkers(category: OSMCategory)
     {
         val region = cameraPosition.projection?.visibleRegion?.latLngBounds ?: return
 
@@ -68,11 +61,9 @@ class MapManager: ViewModel()
         }
     }
 
-    private fun addMapMarkersOSM(category: MapCategory, region: LatLngBounds)
+    private fun addMapMarkersOSM(category: OSMCategory, region: LatLngBounds)
     {
-        println("${category.title} was tapped")
-
-        if (category.osmCategories == null) return
+        if (category.tagFilters.isEmpty()) return
 
         val request = OSMRequest(category, region)
 
@@ -89,7 +80,7 @@ class MapManager: ViewModel()
         }
     }
 
-    private fun removeMapMarkers(category: MapCategory)
+    private fun removeMapMarkers(category: OSMCategory)
     {
         // Update the state with the filtered list
         osmSearchResults = osmSearchResults.filter { it.category.id != category.id }

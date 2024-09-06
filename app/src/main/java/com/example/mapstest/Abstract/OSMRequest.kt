@@ -1,6 +1,7 @@
 package com.example.mapstest.Abstract
 
-import com.example.mapstest.Managers.OSMPointOfInterest
+import com.example.mapstest.Models.OSMCategory
+import com.example.mapstest.Models.OSMPointOfInterest
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import kotlinx.coroutines.Dispatchers
@@ -10,14 +11,14 @@ import okhttp3.Request
 import org.json.JSONObject
 import java.net.URLEncoder
 
-class OSMRequest(private val category: MapCategory, private val region: LatLngBounds)
+class OSMRequest(private val category: OSMCategory, private val region: LatLngBounds)
 {
     private val client = OkHttpClient()
 
     suspend fun start(): List<OSMPointOfInterest>?
     {
         // Ensure categories are available
-        val categories = category.osmCategories ?: return null
+        val categories = category.tagFilters
         if (categories.isEmpty()) return null
 
         // Prepare query string using OSMQuery

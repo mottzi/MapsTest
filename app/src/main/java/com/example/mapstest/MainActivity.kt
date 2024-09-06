@@ -7,12 +7,18 @@ import androidx.activity.enableEdgeToEdge
 import com.example.mapstest.ActivityPickerScreen.ActivityPickerScreen
 import com.example.mapstest.ui.theme.MapsTestTheme
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+class MainActivity : ComponentActivity()
+{
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
-        setContent{
-            MapsTestTheme{
+        setContent()
+        {
+            MapsTestTheme()
+            {
+                // first view to be displayed
                 ActivityPickerScreen()
             }
         }

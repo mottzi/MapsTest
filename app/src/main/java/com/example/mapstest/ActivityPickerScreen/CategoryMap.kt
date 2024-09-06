@@ -1,58 +1,53 @@
 package com.example.mapstest.ActivityPickerScreen
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import com.example.mapstest.Managers.MapManager
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 
-@SuppressLint("MissingPermission")
 @Composable
 fun CategoryMap(mapManager: MapManager)
 {
-    // state variable that hold the camera position
+    // camera position state
     val cameraPosition = mapManager.cameraPosition
 
-    // bi-directional data flow from CategoryMap <-> GoogleMap
-    GoogleMap(cameraPositionState = cameraPosition, properties = MapProperties(mapStyleOptions = MapStyleOptions(styleJson)))
-    {
-        mapManager.osmSearchResults.forEach()
-        { poi ->
-            Marker(title = poi.name,
-                state = MarkerState(
-                    position = LatLng(
-                        poi.coordinate.latitude,
-                        poi.coordinate.longitude
-                    )
-                )
-            )
-        }
+    // custom map styling
+    val properties = MapProperties(mapStyleOptions = MapStyleOptions(mapStyles))
 
+    GoogleMap(cameraPositionState = cameraPosition, properties = properties)
+    {
+        // add a marker for every element in our osm search result state list
+        mapManager.osmSearchResults.forEach()
+        {
+            Marker(title = it.name, state = MarkerState(it.coordinate))
+        }
     }
 }
 
-val styleJson = """
-    [
-        {
-            "featureType": "transit",
-            "stylers": [
-                {
-                    "visibility": "off"
-                }
-            ]
-        },
-        {
-            "featureType": "poi",
-            "elementType": "labels",
-            "stylers": [
-                {
-                    "visibility": "off"
-                }
-            ]
-        }
-    ]
+// https://developers.google.com/maps/documentation/android-sdk/style-reference
+// this makes the map view cleaner by disabling POI and transit labels
+private val mapStyles =
+"""
+[
+    {
+        "featureType": "transit",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    }
+]
 """.trimIndent()

@@ -4,17 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.mapstest.Abstract.MapCategory
-import com.example.mapstest.Abstract.initialCategories
+import com.example.mapstest.Models.OSMCategory
+import com.example.mapstest.Models.initialCategories
 
 @Suppress("NAME_SHADOWING")
 class CategoryManager : ViewModel()
 {
     var mapManager: MapManager? = null
 
-    var allCategories: List<MapCategory> by mutableStateOf(initialCategories)
+    var allCategories: List<OSMCategory> by mutableStateOf(initialCategories)
 
-    fun toggleCategory(category: MapCategory)
+    fun toggleCategory(category: OSMCategory)
     {
         val index = allCategories.indexOfFirst { it.id == category.id }
         if (index == -1) return
