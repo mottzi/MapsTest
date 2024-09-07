@@ -1,7 +1,11 @@
 package com.example.mapstest.activityPickerScreen
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +30,16 @@ fun CategoryButton(category: OSMCategory, categoryManager: CategoryManager)
         onClick = { categoryManager.toggleCategory(category) }
     )
     {
-        Text(
-            text = category.title,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(12.dp, 8.dp)
-        )
+        Row(Modifier.padding(10.dp, 6.dp), Arrangement.spacedBy(4.dp))
+        {
+            Icon(category.icon, "Home", modifier = Modifier.size(22.dp))
+
+            Text(
+                text = category.title,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(end = 3.dp)
+            )
+        }
+
     }
 }
